@@ -23,18 +23,40 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                height: 50,
-                color: Colors.greenAccent,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        appState.input,
+                height: 75,
+                color: Colors.grey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        appState.operation,
                         style: const TextStyle(fontSize: 20),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 75,
+                color: Colors.greenAccent,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "",
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            appState.removeLast();
+                          },
+                          icon: const Icon(Icons.arrow_back)),
+                    ],
+                  ),
                 ),
               ),
               const NumberButtonRow(
@@ -54,25 +76,25 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
 class NumberButton extends StatelessWidget {
   NumberButton({super.key, required this.number}) {
-    title = number.toString();
+    stringNumber = number.toString();
   }
 
   final int number;
-  late final String title;
+  late final String stringNumber;
 
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<CalculatorAppState>();
     return ElevatedButton(
       onPressed: () {
-        appState.appendNumber(newInput: title);
+        appState.provideInput(newInput: stringNumber);
       },
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(22),
       ),
       child: Text(
-        title,
+        stringNumber,
         style: const TextStyle(fontSize: 25),
       ),
     );
@@ -103,7 +125,21 @@ class SpecialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final appState = context.watch<CalculatorAppState>();
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        if (type == SpecialButtonType.multiplication) {
+          appState.provideInput(newInput: "x");
+        } else if (type == SpecialButtonType.subtraction) {
+          appState.provideInput(newInput: "-");
+        } else if (type == SpecialButtonType.sum) {
+          appState.provideInput(newInput: "+");
+        } else if (type == SpecialButtonType.clear) {
+          appState.clearAll();
+        } else if (type == SpecialButtonType.comma) {
+          // TODO: Decimal calculations
+        } else {
+          // TODO: Something special when pressed, animation or what?
+        }
+      },
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(22),
