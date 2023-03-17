@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calculator/CalculatorAppState.dart';
+import 'package:provider/provider.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
@@ -10,11 +12,8 @@ class CalculatorScreen extends StatefulWidget {
 class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<CalculatorAppState>();
     var colorScheme = Theme.of(context).colorScheme;
-
-    // The container for the current page, with its background color
-    // and subtle switching animation.
-    var mainArea = ColoredBox(color: colorScheme.surfaceVariant);
 
     return Scaffold(
       body: SafeArea(
@@ -26,41 +25,23 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  color: Colors.amber,
+                  height: 50,
+                  color: Colors.greenAccent,
                   child: Row(
                     children: [
-                      NumberButton(number: 7),
-                      const SizedBox(width: 15),
-                      NumberButton(number: 8),
-                      const SizedBox(width: 15),
-                      NumberButton(number: 9),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          appState.input,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Container(
-                  color: Colors.amber,
-                  child: Row(
-                    children: [
-                      NumberButton(number: 4),
-                      const SizedBox(width: 15),
-                      NumberButton(number: 5),
-                      const SizedBox(width: 15),
-                      NumberButton(number: 6),
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Colors.amber,
-                  child: Row(
-                    children: [
-                      NumberButton(number: 1),
-                      const SizedBox(width: 15),
-                      NumberButton(number: 2),
-                      const SizedBox(width: 15),
-                      NumberButton(number: 3),
-                    ],
-                  ),
-                )
+                const NumberButtonRow(list: [4, 5, 6]),
+                const NumberButtonRow(list: [4, 5, 6]),
+                const NumberButtonRow(list: [1, 2, 3])
               ],
             ),
           ),
@@ -80,9 +61,10 @@ class NumberButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<CalculatorAppState>();
     return ElevatedButton(
       onPressed: () {
-        print("Pressed $title");
+        appState.appendNumber(newInput: title);
       },
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
@@ -91,6 +73,31 @@ class NumberButton extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(fontSize: 25),
+      ),
+    );
+  }
+}
+
+class NumberButtonRow extends StatelessWidget {
+  final List<int> list;
+
+  const NumberButtonRow({super.key, required this.list});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.amber,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            NumberButton(number: list[0]),
+            const SizedBox(width: 15),
+            NumberButton(number: list[1]),
+            const SizedBox(width: 15),
+            NumberButton(number: list[2]),
+          ],
+        ),
       ),
     );
   }
