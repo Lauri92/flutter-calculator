@@ -19,34 +19,32 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       body: SafeArea(
         child: Container(
           color: Colors.blue,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 50,
-                  color: Colors.greenAccent,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          appState.input,
-                          style: const TextStyle(fontSize: 20),
-                        ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: 50,
+                color: Colors.greenAccent,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        appState.input,
+                        style: const TextStyle(fontSize: 20),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const NumberButtonRow(
-                    list: [7, 8, 9], type: SpecialButtonType.multiplication),
-                const NumberButtonRow(
-                    list: [4, 5, 6], type: SpecialButtonType.subtraction),
-                const NumberButtonRow(
-                    list: [1, 2, 3], type: SpecialButtonType.sum)
-              ],
-            ),
+              ),
+              const NumberButtonRow(
+                  list: [7, 8, 9], type: SpecialButtonType.multiplication),
+              const NumberButtonRow(
+                  list: [4, 5, 6], type: SpecialButtonType.subtraction),
+              const NumberButtonRow(
+                  list: [1, 2, 3], type: SpecialButtonType.sum),
+              const SpecialButtonRow()
+            ],
           ),
         ),
       ),
@@ -89,6 +87,12 @@ class SpecialButton extends StatelessWidget {
       icon = Icons.remove;
     } else if (type == SpecialButtonType.sum) {
       icon = Icons.add;
+    } else if (type == SpecialButtonType.clear) {
+      icon = CupertinoIcons.arrow_counterclockwise;
+    } else if (type == SpecialButtonType.comma) {
+      icon = Icons.accessibility_sharp;
+    } else {
+      icon = CupertinoIcons.equal;
     }
   }
 
@@ -122,24 +126,52 @@ class NumberButtonRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.amber,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            NumberButton(number: list[0]),
-            const SizedBox(width: 15),
-            NumberButton(number: list[1]),
-            const SizedBox(width: 15),
-            NumberButton(number: list[2]),
-            const SizedBox(width: 15),
-            SpecialButton(
-              type: type,
-            )
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          NumberButton(number: list[0]),
+          const SizedBox(width: 22),
+          NumberButton(number: list[1]),
+          const SizedBox(width: 22),
+          NumberButton(number: list[2]),
+          const SizedBox(width: 22),
+          SpecialButton(
+            type: type,
+          ),
+        ],
       ),
     );
   }
 }
 
-enum SpecialButtonType { multiplication, subtraction, sum }
+class SpecialButtonRow extends StatelessWidget {
+  const SpecialButtonRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.amber,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SpecialButton(type: SpecialButtonType.clear),
+          const SizedBox(width: 22),
+          NumberButton(number: 0),
+          const SizedBox(width: 22),
+          SpecialButton(type: SpecialButtonType.comma),
+          const SizedBox(width: 22),
+          SpecialButton(type: SpecialButtonType.equals),
+        ],
+      ),
+    );
+  }
+}
+
+enum SpecialButtonType {
+  multiplication,
+  subtraction,
+  sum,
+  clear,
+  comma,
+  equals
+}
