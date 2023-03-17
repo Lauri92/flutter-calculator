@@ -29,50 +29,38 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   color: Colors.amber,
                   child: Row(
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          print("Pressing a button");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(30),
-                        ),
-                        child: const Text(
-                          "1",
-                          style: TextStyle(fontSize: 25),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          print("Pressing a button");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(30),
-                        ),
-                        child: const Text(
-                          "2",
-                          style: TextStyle(fontSize: 25),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          print("Pressing a button");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(30),
-                        ),
-                        child: const Text(
-                          "3",
-                          style: TextStyle(fontSize: 25),
-                        ),
-                      )
+                      NumberButton(number: 7),
+                      const SizedBox(width: 15),
+                      NumberButton(number: 8),
+                      const SizedBox(width: 15),
+                      NumberButton(number: 9),
                     ],
                   ),
                 ),
+                Container(
+                  color: Colors.amber,
+                  child: Row(
+                    children: [
+                      NumberButton(number: 4),
+                      const SizedBox(width: 15),
+                      NumberButton(number: 5),
+                      const SizedBox(width: 15),
+                      NumberButton(number: 6),
+                    ],
+                  ),
+                ),
+                Container(
+                  color: Colors.amber,
+                  child: Row(
+                    children: [
+                      NumberButton(number: 1),
+                      const SizedBox(width: 15),
+                      NumberButton(number: 2),
+                      const SizedBox(width: 15),
+                      NumberButton(number: 3),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -83,13 +71,27 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 }
 
 class NumberButton extends StatelessWidget {
-  const NumberButton({super.key, required this.number});
+  NumberButton({super.key, required this.number}) {
+    title = number.toString();
+  }
 
   final int number;
+  late final String title;
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return ElevatedButton(
+      onPressed: () {
+        print("Pressed $title");
+      },
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        padding: const EdgeInsets.all(30),
+      ),
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 25),
+      ),
+    );
   }
 }
