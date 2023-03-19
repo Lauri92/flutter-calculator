@@ -47,7 +47,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "",
+                        appState.last,
                         style: const TextStyle(fontSize: 20),
                       ),
                       IconButton(
